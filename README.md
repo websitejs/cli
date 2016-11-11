@@ -1,2 +1,2 @@
-# cli
-Command line tools for WebsiteJS
+# websitejs-cli
+Command line tools for WebsiteJS library
