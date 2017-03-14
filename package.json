@@ -1,0 +1,35 @@
+{
+  "name": "websitejs-cli",
+  "version": "0.0.1",
+  "description": "WebsiteJS Command Line Interface",
+  "main": "index.js",
+  "bin": {
+    "websitejs": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/websitejs/cli.git"
+  },
+  "keywords": [
+    "WebsiteJS",
+    "Command Line Interface",
+    "Frontend",
+    "Architecture"
+  ],
+  "author": "Rocco Janse, roccojanse@outlook.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/websitejs/cli/issues"
+  },
+  "homepage": "https://github.com/websitejs/cli#readme",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "fs-extra": "^1.0.0",
+    "readline": "^1.3.0",
+    "username": "^2.2.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-jsdoc3": "^1.0.0"
+  }
+}
