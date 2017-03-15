@@ -10,3 +10,5 @@ gulp.task('docs', function(cb) {
     })
     .pipe(jsdoc(cb));
 });
+
+gulp.task('default', ['docs']);
