@@ -7,7 +7,7 @@ var git = require('nodegit'),
 
 /**
  * Handles Git repositories
- * @module websitejs/repos
+ * @module websitejs-cli/repos
  */
 var Repos = module.exports = {
 

@@ -6,8 +6,8 @@ var name = 'WebsiteJS',
     version = require('./package').version,
     program = require('commander'),
 
-    repos = require('./src/repos.js')/*,
-    files = require('./src/files')*/;
+    repos = require('./src/repos'),
+    files = require('./src/files');
 
 
 program
@@ -28,10 +28,6 @@ program
     //.option("-f, --force", "Force file creation even if not in a project root")
     .option("-d, --dir <dir>", 'Set directory to create ' + name + ' project into.')
     .action(repos.cloneRepository)
-    // .action(function() {
-    //     console.log('DONE!');
-    //     process.exit();
-    // })
     .on('--help', function () {
         console.log('  Example:');
         console.log();
@@ -48,11 +44,7 @@ program
     .option("--scss", "Skips sass file creation")
     .option("--js", "Skips javascript file creation")
     .option("--gspec", "Skips test file creation")
-    //.action(files.createFiles)
-    .action(function() {
-        console.log('CREATED %s!', program.type);
-        process.exit();
-    })
+    .action(files.createFiles)
     .on('--help', function () {
         console.log('  Examples:');
         console.log();
