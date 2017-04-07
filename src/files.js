@@ -2,6 +2,7 @@
 
 var fs = require('fs-extra'),
     path = require('path'),
+    fullname = require('fullname'),
     username = require('username');
 
 /**
@@ -63,34 +64,46 @@ var Files = module.exports = {
                 var d = new Date(),
                     months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
-                data = data.replace(/{{name}}/gi, name);
-                data = data.replace(/{{ucfirst_name}}/gi, name.charAt(0).toUpperCase() + name.slice(1));
-                data = data.replace(/{{author}}/gi, username.sync());
-                data = data.replace(/{{date}}/gi, months[d.getMonth()] + ' ' + d.getFullYear());
+                // get users 'full name'
+                fullname().then(function(uName) {
 
-                console.log(data);
-
-                // write file
-                fs.outputFile(destFile, data, function(err) {
-
-                    if (err) {
-                        console.log(err);
-                        errors++;
-                    } else {
-                        // set files to full access
-                        fs.chmodSync(destFile, '0777');
-                        console.log('Created ' + destFile + '.');
+                    // or fallback to 'username' and try to format it
+                    if (!uName) {
+                        var userNameArray = username.sync().split('.');
+                        userNameArray[0].charAt(0).toUpperCase();
+                        userNameArray[(userNameArray.length - 1)].charAt(0).toUpperCase();
+                        uName = userNameArray.join(' ');
                     }
 
-                    if (errors > 0) {
-                        console.log('Done, but with errors (%d).', errors);
-                        process.exit(1);
-                    } else {
-                        console.log('Done, succesfully created %s "%s".', type, name);
-                        process.exit();
-                    }
+                    // replace tpl values
+                    data = data.replace(/{{name}}/gi, name);
+                    data = data.replace(/{{ucfirst_name}}/gi, name.charAt(0).toUpperCase() + name.slice(1));
+                    data = data.replace(/{{author}}/gi, uName);
+                    data = data.replace(/{{date}}/gi, months[d.getMonth()] + ' ' + d.getFullYear());
 
+                    // write file
+                    fs.outputFile(destFile, data, function(err) {
+
+                        if (err) {
+                            console.log(err);
+                            errors++;
+                        } else {
+                            // set files to full access
+                            fs.chmodSync(destFile, '0777');
+                            console.log('Created ' + destFile + '.');
+                        }
+
+                        if (errors > 0) {
+                            console.log('Done, but with errors (%d).', errors);
+                            process.exit(1);
+                        } else {
+                            console.log('Done, succesfully created %s "%s".', type, name);
+                            process.exit();
+                        }
+
+                    });
                 });
+
             });
 
 

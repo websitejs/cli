@@ -31,6 +31,7 @@
     "username": "^2.3.0"
   },
   "devDependencies": {
+    "fullname": "^3.3.0",
     "gulp": "^3.9.1",
     "gulp-jsdoc3": "^1.0.0"
   }
