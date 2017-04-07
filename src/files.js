@@ -46,6 +46,7 @@ var Files = module.exports = {
 
         fileTypes.forEach(function(fType, i) {
 
+            name = name.toLowerCase();
             var filename = name;
 
             var regex = /^[0-9A-Za-z\-\_]+$/,
@@ -86,9 +87,30 @@ var Files = module.exports = {
                         uName = userNameArray.join(' ');
                     }
 
+                    // capitalize name
+                    var jsName = name.charAt(0).toUpperCase() + name.slice(1);
+
+                    if (fType === 'js') {
+                        // format name as js class
+                        // TODO: this should be more elegant
+                        var jsNameArray = name.split('-');
+                        for (var j = 0; j < jsNameArray.length; j++) {
+                            if (jsNameArray[j] !== '') {
+                                jsNameArray[j] = jsNameArray[j].charAt(0).toUpperCase() + jsNameArray[j].slice(1);
+                            }
+                        }
+                        jsNameArray = jsNameArray.join('').split('_');
+                        for (var k = 0; k < jsNameArray.length; k++) {
+                            if (jsNameArray[k] !== '') {
+                                jsNameArray[k] = jsNameArray[k].charAt(0).toUpperCase() + jsNameArray[k].slice(1);
+                            }
+                        }
+                        jsName = jsNameArray.join('');
+                    }
+
                     // replace tpl values
                     data = data.replace(/{{name}}/gi, name);
-                    data = data.replace(/{{ucfirst_name}}/gi, name.charAt(0).toUpperCase() + name.slice(1));
+                    data = data.replace(/{{ucfirst_name}}/gi, jsName);
                     data = data.replace(/{{author}}/gi, uName);
                     data = data.replace(/{{date}}/gi, months[d.getMonth()] + ' ' + d.getFullYear());
 
