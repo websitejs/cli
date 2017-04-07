@@ -41,11 +41,22 @@ var Files = module.exports = {
         var tplLocation = path.join(Files.cwd, typeTplPath),
             destPath = path.join(Files.cwd, typeDestPath),
             fileTypes = ['scss', 'html', 'js', 'gspec'],
+            processed = 0,
             errors = 0;
 
         fileTypes.forEach(function(fType, i) {
 
             var filename = name;
+
+            var regex = /^[0-9A-Za-z\-\_]+$/,
+                illegalName = regex.test(name);
+
+            // sanity filename check
+            if (!illegalName) {
+                console.log('\nError: Only 0-9, a-z, A-Z, - and _ are allowed in the name of the %s.\n\n', type);
+                process.exit(1);
+            }
+
             if (fType === 'scss') {
                 filename = '_' + name;
             }
@@ -84,6 +95,8 @@ var Files = module.exports = {
                     // write file
                     fs.outputFile(destFile, data, function(err) {
 
+                        processed++;
+
                         if (err) {
                             console.log(err);
                             errors++;
@@ -93,23 +106,18 @@ var Files = module.exports = {
                             console.log('Created ' + destFile + '.');
                         }
 
-                        if (errors > 0) {
-                            console.log('Done, but with errors (%d).', errors);
-                            process.exit(1);
-                        } else {
-                            console.log('Done, succesfully created %s "%s".', type, name);
-                            process.exit();
+                        if (processed === fileTypes.length) {
+                            if (errors > 0) {
+                                console.log('Done, but with errors (%d).', errors);
+                                process.exit(1);
+                            } else {
+                                console.log('Done, succesfully created %s "%s".', type, name);
+                                process.exit();
+                            }
                         }
-
                     });
                 });
-
             });
-
-
         });
-
     }
-
-
 };
