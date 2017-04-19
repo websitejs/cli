@@ -47,9 +47,8 @@ var Files = module.exports = {
         fileTypes.forEach(function(fType, i) {
 
             name = name.toLowerCase();
-            var filename = name;
 
-            var regex = /^[0-9A-Za-z\-\_]+$/,
+            var regex = /^[0-9A-Za-z\-\_\/]+$/,
                 illegalName = regex.test(name);
 
             // sanity filename check
@@ -58,6 +57,19 @@ var Files = module.exports = {
                 process.exit(1);
             }
 
+            // create path when slashes in filename 
+            var resolvedPath = name.split('/');
+            if (resolvedPath.length > 0) {
+                // we need to create a path
+                name = resolvedPath.splice(-1, 1)[0];
+                destPath = destPath + '/' + resolvedPath.join('/');
+
+                fs.mkdirs(destPath, '0777', function() {
+                    console.log('Created dir: ', destPath);
+                }); 
+            }
+
+            var filename = name;
             if (fType === 'scss') {
                 filename = '_' + name;
             }
